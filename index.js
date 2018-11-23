@@ -7,6 +7,7 @@ const books = [
   {
     title: 'Harry Potter and the Chamber of Secrets',
     author: {
+      type: 'regular',
       firstName: 'J.K.',
       lastName: 'Rowling',
     },
@@ -14,8 +15,10 @@ const books = [
   {
     title: 'Jurassic Park',
     author: {
+      type: 'super',
       firstName: 'Michael', 
       lastName: 'Crichton',
+      superPower: 'Dinosaur taming'
     },
   },
 ];
@@ -28,12 +31,23 @@ const typeDefs = gql`
   # This "Book" type can be used in other type declarations.
   type Book {
     title: String
-    author: Author
+    author: AuthorInterface
   }
 
-  type Author {
-    firstName: String
-    lastName: String
+  interface AuthorInterface {
+    firstName: String!
+    lastName: String!
+  }
+
+  type Author implements AuthorInterface {
+    firstName: String!
+    lastName: String!
+  }
+
+  type SuperAuthor implements AuthorInterface {
+    firstName: String!
+    lastName: String!
+    superPower: String
   }
 
   # The "Query" type is the root of all GraphQL queries.
@@ -49,9 +63,15 @@ const resolvers = {
   Query: {
     books: () => books,
   },
-  Book: {
-    author: () => ({ firstName: 'yo', lastName: 'peepz' })
-  }
+  AuthorInterface: {
+    __resolveType({ type }) {
+      if (type === 'super') {
+        return 'SuperAuthor';
+      }
+
+      return 'Author';
+    }
+  },
 };
 
 // In the most basic sense, the ApolloServer can be started
