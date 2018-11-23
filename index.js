@@ -6,11 +6,17 @@ const { ApolloServer, gql } = require('apollo-server');
 const books = [
   {
     title: 'Harry Potter and the Chamber of Secrets',
-    author: 'J.K. Rowling',
+    author: {
+      firstName: 'J.K.',
+      lastName: 'Rowling',
+    },
   },
   {
     title: 'Jurassic Park',
-    author: 'Michael Crichton',
+    author: {
+      firstName: 'Michael', 
+      lastName: 'Crichton',
+    },
   },
 ];
 
@@ -23,6 +29,11 @@ const typeDefs = gql`
   type Book {
     title: String
     author: String
+  }
+
+  type Author {
+    firstName: String
+    lastName: String
   }
 
   # The "Query" type is the root of all GraphQL queries.
