@@ -6,20 +6,25 @@ const { ApolloServer, gql } = require('apollo-server');
 const books = [
   {
     title: 'Harry Potter and the Chamber of Secrets',
-    author: {
+    authors: [{
       type: 'regular',
       firstName: 'J.K.',
       lastName: 'Rowling',
-    },
-  },
-  {
-    title: 'Jurassic Park',
-    author: {
+    }, {
       type: 'super',
       firstName: 'Michael', 
       lastName: 'Crichton',
       superPower: 'Dinosaur taming'
-    },
+    }],
+  },
+  {
+    title: 'Jurassic Park',
+    authors: [{
+      type: 'super',
+      firstName: 'Michael', 
+      lastName: 'Crichton',
+      superPower: 'Dinosaur taming'
+    }],
   },
 ];
 
@@ -31,7 +36,7 @@ const typeDefs = gql`
   # This "Book" type can be used in other type declarations.
   type Book {
     title: String
-    author: AuthorInterface
+    authors: [AuthorInterface]
   }
 
   interface AuthorInterface {
